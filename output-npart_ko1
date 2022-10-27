@@ -1,0 +1,12 @@
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+kmom-kmop
+particle 1: -321
+particle 2: 3334
+particle 3: -321
+particle 4: -3334
+/bin/bash: warning: setlocale: LC_ALL: cannot change locale (en_US.UTF-8)
+nevent: 284800
+complete!
+same pair 1 events: 2792
+same pair 2 events: 389
