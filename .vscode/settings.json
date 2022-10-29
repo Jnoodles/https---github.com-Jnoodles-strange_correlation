@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "same_kmom_kmop_deduction.C": "cpp"
+        "same_kmom_kmop_deduction.C": "cpp",
+        "same_kpom_kpop_deduction.C": "cpp"
     }
 }

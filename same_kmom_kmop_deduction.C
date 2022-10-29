@@ -101,24 +101,25 @@ int main(int argc, char *argv[])
         hadronTree->GetEntry(nevent);
 
         if(b > 3.4) continue;//0-5%
+        int omega_num=0;
+        int omegabar_num=0;
+        for (Int_t j = i + 1; j < mult; j++)
+        {
+            if(id[j]==3334 ) omega_num++;
+            if(id[j]==-3334) omegabar_num++;
+        }
+        if(omega_num ==0 && omegabar_num ==0)   continue;
+        if(omega_num > 1)   continue; 
 
         bool p2_eve=false;
         bool p4_eve=false;
+
         for (Int_t i = 0; i < mult - 1; i++)
         {
             
             TLorentzVector p1;
             p1.SetPxPyPzE(px[i], py[i], pz[i], energy[i]);
             if( fabs(p1.PseudoRapidity()) >1 ) continue;
-
-/*          int omega_num=0;
-            int omegabar_num=0;
-            for (Int_t j = i + 1; j < mult; j++)
-            {
-                if(id[j]==3334 ) omega_num++;
-                if(id[j]==-3334) omegabar_num++;
-            } */
-
 
             for (Int_t j = i + 1; j < mult; j++)
             {
@@ -129,39 +130,48 @@ int main(int argc, char *argv[])
                 // particle 1 and 2 
                 if ((id[i] == particle1 && id[j] == particle2) || (id[i] == particle2 && id[j] == particle1))
                 {
-             //       if(omegabar_num != 0) continue;
+
                     p1.SetPxPyPzE(px[i], py[i], pz[i], energy[i]);
                     p2.SetPxPyPzE(px[j], py[j], pz[j], energy[j]);
                     TLorentzVector p3 = p1 + p2;
+                    TLorentzVector p4 = p1 - p2;
                     p1.Boost(-p3.BoostVector());
                     p2.Boost(-p3.BoostVector());
+                    p4.Boost(-p3.BoostVector());
+                  
                     float delk = 0.5*(p1 - p2).Rho();
-                    float deltapt = (p1-p2).Perp();
+                    //float deltapt = (p1-p2).Perp();
+                    float deltapt = p4.Perp();
                     float deltay = p1.Rapidity() - p2.Rapidity();
-                    float phi = p1.Phi()-p2.Phi();
+                    float phi = (p1-p2).Phi();
                     samept_pair1->Fill(deltapt, 1.0/0.1);
                     samek_pair1->Fill(delk, 1.0 / 0.1);
                     samey_pair1->Fill(deltay,1.0/0.1);
                     samephi_pair1->Fill(phi,1.0/0.1);
                     p2_eve=true;
+
                 }
                 //pariticle 3 & 4 
                 if ((id[i] == particle3 && id[j] == particle4) || (id[i] == particle4 && id[j] == particle3))
                 {
-               //     if(omega_num != 0) continue;
+
                     p1.SetPxPyPzE(px[i], py[i], pz[i], energy[i]);
                     p2.SetPxPyPzE(px[j], py[j], pz[j], energy[j]);
                     TLorentzVector p3 = p1 + p2;
+                    TLorentzVector p4 = p1 - p2;
                     p1.Boost(-p3.BoostVector());
                     p2.Boost(-p3.BoostVector());
+                    p4.Boost(-p3.BoostVector());
+
                     float delk1 = 0.5*(p1 - p2).Rho();
-                    float deltapt = (p1-p2).Perp();
+                   // float deltapt = (p1-p2).Perp();
+                    float deltapt = P4.Perp();
                     float deltay = p1.Rapidity() - p2.Rapidity();
-                    float phi = p1.Phi()-p2.Phi();
+                    float phi = p4.Phi();
                     samept_pair2->Fill(deltapt, 1.0/0.1);
                     samek_pair2->Fill(delk1, 1.0/0.1);
                     samey_pair2->Fill(deltay, 1.0/0.1);
-                    samephi_pair2->Fill(phi,1.0/0.1);
+                    samephi_pair2->Fill(phi, 1.0/0.1);
                     p4_eve=true;
                 }
                 
